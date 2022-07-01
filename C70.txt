@@ -1,121 +1,26 @@
-Step 1
+ constructor() {
+    super();
+    this.state = {
+      fontLoaded: false
+    };
+  }
 
-In App.js
+ async loadFonts() {
+    await Font.loadAsync({
+      Rajdhani_600SemiBold: Rajdhani_600SemiBold
+    });
+    this.setState({ fontLoaded: true });
+  }
 
-const TabNavigator = createBottomTabNavigator({
-  Transaction: {screen: TransactionScreen},
-  Search: {screen: SearchScreen},
-},
-{
-  defaultNavigationOptions: ({navigation})=>({
-    tabBarIcon: ()=>{
-      const routeName = navigation.state.routeName;
-      console.log(routeName)
-      if(routeName === "Transaction"){
-        return(
-          <Image
-          source={require("./assets/book.png")}
-          style={{width:40, height:40}}
-        />
-        )
-        
-      }
-      else if(routeName === "Search"){
-        return(
-          <Image
-          source={require("./assets/searchingbook.png")}
-          style={{width:40, height:40}}
-        />)
-        
-      }
+  componentDidMount() {
+    this.loadFonts();
+  }
+
+  render() {
+    const { fontLoaded } = this.state;
+    if (fontLoaded) {
+      return <BottomTabNavigator />;
     }
-  })
+    return null;
+  }
 }
-);
-----------------------------------------------------------
-Step 2
-
-In BookTransactionScreen.js
-
-else if (buttonState === "normal"){
-        return(
-          <View style={styles.container}>
-            <View>
-              <Image
-                source={require("../assets/booklogo.jpg")}
-                style={{width:200, height: 200}}/>
-              <Text style={{textAlign: 'center', fontSize: 30}}>Wily</Text>
-            </View>
-            <View style={styles.inputView}>
-            <TextInput 
-              style={styles.inputBox}
-              placeholder="Book Id"
-              value={this.state.scannedBookId}/>
-            <TouchableOpacity 
-              style={styles.scanButton}
-              onPress={()=>{
-                this.getCameraPermissions("BookId")
-              }}>
-              <Text style={styles.buttonText}>Scan</Text>
-            </TouchableOpacity>
-            </View>
-            <View style={styles.inputView}>
-            <TextInput 
-              style={styles.inputBox}
-              placeholder="Student Id"
-              value={this.state.scannedStudentId}/>
-            <TouchableOpacity 
-              style={styles.scanButton}
-              onPress={()=>{
-                this.getCameraPermissions("StudentId")
-              }}>
-              <Text style={styles.buttonText}>Scan</Text>
-            </TouchableOpacity>
-            </View>
-          </View>
-        );
-      }
---------------------------------------------------------------
-Step 3 
-
-Add styles In BookTransactionScreen.js
-
- buttonText:{
-      fontSize: 15,
-      textAlign: 'center',
-      marginTop: 10
-    },
-    inputView:{
-      flexDirection: 'row',
-      margin: 20
-    },
-    inputBox:{
-      width: 200,
-      height: 40,
-      borderWidth: 1.5,
-      borderRightWidth: 0,
-      fontSize: 20
-    },
-    scanButton:{
-      backgroundColor: '#66BB6A',
-      width: 50,
-      borderWidth: 1.5,
-      borderLeftWidth: 0
-    }
-
------------------------------------------
-Step 4
-
-Add states In BookTransactionScreen.js
-
- scannedBookId: '',
- scannedStudentId:'',
-
-Change buttonState: id in getCameraPermissions() function
------------------------------------------
-Step 5
-
-In render()
-
- if (buttonState !== "normal" && hasCameraPermissions){
-------------------------------------
